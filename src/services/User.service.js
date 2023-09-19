@@ -21,6 +21,10 @@ const getUser = async (email, password) => {
   }
 };
 
+const registerUser = (displayName, email, password, image) =>
+  User.create({ displayName, email, password, image });
+
 module.exports = {
   getUser,
+  registerUser,
 };
