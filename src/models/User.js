@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  User.associate = (models) => {
-    User.hasMany(models.BlogPosts, {
-      foreignKey: 'user_id',
-      as: 'blog_posts',
-    });
-  };
+  // User.associate = (models) => {
+  //   User.hasMany(models.BlogPosts, {
+  //     foreignKey: 'user_id',
+  //     as: 'blog_posts',
+  //   });
+  // };
 
   return User;
 };
