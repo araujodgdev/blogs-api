@@ -20,6 +20,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       content: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       user_id: {
@@ -34,10 +35,10 @@ module.exports = {
       },
       published: {
         allowNull: false,
-        type: Sequelize.DATETIME,
+        type: Sequelize.DATE,
       },
       updated: {
-        type: Sequelize.DATETIME,
+        type: Sequelize.DATE,
       },
     });
   },
