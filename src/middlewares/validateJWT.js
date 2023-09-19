@@ -8,13 +8,14 @@ function extractToken(baererToken) {
   return baererToken.split(' ')[1];
 }
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const baererToken = req.headers.authorization;
   const token = extractToken(baererToken);
   try {
     if (!baererToken) return res.status(401).json({ message: 'Token not found' });
     const decoded = jwt.verify(token, secret);
-    const user = userService.getUserById(decoded.data.id);
+    const id = decoded.data.userId;
+    const user = await userService.getUserById(id);
 
     req.user = user;
 
