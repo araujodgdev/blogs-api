@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config');
 
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory, User, Category } = require('../models');
 
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
@@ -9,7 +9,13 @@ const sequelize = new Sequelize(config[env]);
 const create = async (title, content, categoryIds, id) => {
   const result = await sequelize.transaction(async (t) => {
     const blogPost = await BlogPost.create(
-      { title, content, userId: id, published: Date.now(), updated: Date.now() },
+      {
+        title,
+        content,
+        userId: id,
+        published: Date.now(),
+        updated: Date.now(),
+      },
       { transaction: t },
     );
     await PostCategory.bulkCreate(
@@ -22,6 +28,22 @@ const create = async (title, content, categoryIds, id) => {
   return result;
 };
 
+const getAll = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return posts;
+};
+
 module.exports = {
   create,
+  getAll,
 };

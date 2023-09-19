@@ -6,7 +6,7 @@ const hasAllFields = (req, res, next) => {
       message: 'Some required fields are missing',
     });
   }
-  next();
+  return next();
 };
 
 const validateCategoryIds = async (req, res, next) => {
@@ -23,7 +23,7 @@ const validateCategoryIds = async (req, res, next) => {
     }
   });
 
-  next();
+  return next();
 };
 
 module.exports = {

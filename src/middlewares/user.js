@@ -23,7 +23,7 @@ const validateNewUserInfo = (req, res, next) => {
         message: '"password" length must be at least 6 characters long',
       });
     }
-    next();
+    return next();
   } catch (error) { return res.status(500).json({ message: error.message }); }
 };
 
