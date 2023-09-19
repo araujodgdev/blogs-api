@@ -23,14 +23,15 @@ const getUser = async (email, password) => {
 
 const getUserById = async (id) => {
   try {
-    const user = await User.findOne({
-      where: id,
+    const user = await User.findAll({
+      where: { id },
+      attributes: { exclude: ['password'] },
     });
-    if (!user) {
-      throw new Error('Token\'s user not found');
+    if (user.length === 0) {
+      throw new Error('User does not exist');
     }
 
-    return user;
+    return user[0];
   } catch (error) {
     return {
       message: error.message,

@@ -7,4 +7,6 @@ router.post('/', validateNewUserInfo, userController.registerUser);
 
 router.get('/', validateJWT, userController.findAllUsers);
 
+router.get('/:id', validateJWT, userController.findUserById);
+
 module.exports = router;
