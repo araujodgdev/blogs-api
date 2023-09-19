@@ -21,13 +21,13 @@ const registerUser = async (req, res) => {
     const user = await userService.getUser(email, password);
 
     if (user.email) {
-      return res.status(httpStatusCodes.inConflict)
+      return res
+        .status(httpStatusCodes.inConflict)
         .json({ message: 'User already registered' });
     }
 
     const jwtConfig = { algorithm: 'HS256' };
-    const payload = { userId: user.id };
-    const token = jwt.sign({ data: payload }, secret, jwtConfig);
+    const token = jwt.sign({ data: { userId: user.id } }, secret, jwtConfig);
     await userService.registerUser(displayName, email, password, image);
 
     return res.status(httpStatusCodes.created).json({ token });
@@ -38,6 +38,18 @@ const registerUser = async (req, res) => {
   }
 };
 
+const findAllUsers = async (req, res) => {
+  try {
+    const users = await userService.findAll();
+    return res.status(httpStatusCodes.OK).json(users);
+  } catch (error) {
+    return res.status(httpStatusCodes.internalServerError).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
+  findAllUsers,
 };
