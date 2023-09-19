@@ -10,7 +10,7 @@ module.exports = {
      */
     await queryInterface.createTable('users', {
       id: {
-        autoIncrement: true, 
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -26,7 +26,7 @@ module.exports = {
       image: {
         type: Sequelize.STRING,
       },
-    })
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -37,5 +37,5 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.dropTable('users');
-  }
+  },
 };
