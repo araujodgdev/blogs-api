@@ -38,8 +38,21 @@ const getPostById = async (req, res) => {
   }
 };
 
+const updateBlogPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    await blogPostService.updatePost(id, title, content);
+    const updatedPost = await blogPostService.getById(id);
+    return res.status(200).json(updatedPost);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createBlogPost,
   getAllPosts,
   getPostById,
+  updateBlogPost,
 };

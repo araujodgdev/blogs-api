@@ -9,22 +9,14 @@ const sequelize = new Sequelize(config[env]);
 const create = async (title, content, categoryIds, id) => {
   const result = await sequelize.transaction(async (t) => {
     const blogPost = await BlogPost.create(
-      {
-        title,
-        content,
-        userId: id,
-        published: Date.now(),
-        updated: Date.now(),
-      },
+      { title, content, userId: id, published: Date.now(), updated: Date.now() },
       { transaction: t },
     );
-    await PostCategory.bulkCreate(
-      categoryIds.map((categoryId) => ({ postId: blogPost.id, categoryId })),
-      { transaction: t },
-    );
+    await PostCategory
+      .bulkCreate(categoryIds
+        .map((categoryId) => ({ postId: blogPost.id, categoryId })), { transaction: t });
     return blogPost;
   });
-
   return result;
 };
 
@@ -39,17 +31,15 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const post = await BlogPost.findOne({
-    where: { id },
-    include: [
-      {
-        model: User,
-        as: 'user',
-        attributes: { exclude: ['password'] },
-      },
-      { model: Category, as: 'categories', through: { attributes: [] } },
-    ],
+  const post = await BlogPost.findOne({ where: { id },
+    include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } }],
   });
+  return post;
+};
+
+const updatePost = async (id, title, content) => {
+  const post = await BlogPost.update({ title, content }, { where: { id } });
   return post;
 };
 
@@ -57,4 +47,5 @@ module.exports = {
   create,
   getAll,
   getById,
+  updatePost,
 };

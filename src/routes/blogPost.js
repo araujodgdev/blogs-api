@@ -5,12 +5,15 @@ const { blogPostController } = require('../controllers');
 const {
   hasAllFields,
   validateCategoryIds,
+  hasCategories,
+  validateOwnership,
 } = require('../middlewares/blogPost');
 
 router.post(
   '/',
   validateJWT,
   hasAllFields,
+  hasCategories,
   validateCategoryIds,
   blogPostController.createBlogPost,
 );
@@ -18,4 +21,12 @@ router.post(
 router.get('/', validateJWT, blogPostController.getAllPosts);
 
 router.get('/:id', validateJWT, blogPostController.getPostById);
+
+router.put(
+  '/:id',
+  validateJWT,
+  hasAllFields,
+  validateOwnership,
+  blogPostController.updateBlogPost,
+);
 module.exports = router;
