@@ -12,7 +12,9 @@ const createBlogPost = async (req, res) => {
     );
     return res.status(201).json(result);
   } catch (error) {
-    return res.status(500).json(req.user);
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
