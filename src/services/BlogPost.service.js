@@ -12,8 +12,7 @@ const create = async (title, content, categoryIds, id) => {
       { title, content, userId: id, published: Date.now(), updated: Date.now() },
       { transaction: t },
     );
-    await PostCategory
-      .bulkCreate(categoryIds
+    await PostCategory.bulkCreate(categoryIds
         .map((categoryId) => ({ postId: blogPost.id, categoryId })), { transaction: t });
     return blogPost;
   });
@@ -43,9 +42,14 @@ const updatePost = async (id, title, content) => {
   return post;
 };
 
+const deletePost = async (id) => {
+  await BlogPost.destroy({ where: { id } });
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   updatePost,
+  deletePost,
 };

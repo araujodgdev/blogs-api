@@ -29,4 +29,11 @@ router.put(
   validateOwnership,
   blogPostController.updateBlogPost,
 );
+
+router.delete(
+  '/:id',
+  validateJWT,
+  validateOwnership,
+  blogPostController.deleteBlogPost,
+);
 module.exports = router;
