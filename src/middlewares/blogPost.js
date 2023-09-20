@@ -6,7 +6,7 @@ const hasAllFields = (req, res, next) => {
       message: 'Some required fields are missing',
     });
   }
-  return next();
+   next();
 };
 
 const hasCategories = (req, res, next) => {
@@ -15,24 +15,22 @@ const hasCategories = (req, res, next) => {
       message: 'Some required fields are missing',
     });
   }
-  return next();
+   next();
 };
 
 const validateCategoryIds = async (req, res, next) => {
   const { categoryIds } = req.body;
   const allCategories = await categoryService.findAll();
 
-  await categoryIds.forEach((id) => {
-    const isRegistered = allCategories.some((category) => category.id === id);
+  const categoriesExists = await categoryIds.map((id) => allCategories
+  .some((category) => category.id === id));
 
-    if (isRegistered === false) {
-      return res.status(400).json({
-        message: 'one or more "categoryIds" not found',
-      });
-    }
-  });
-
-  return next();
+  if (!categoriesExists.every((exists) => exists === true)) {
+    return res.status(400).json({
+      message: 'one or more "categoryIds" not found',
+    });
+  }
+   next();
 };
 
 const validateOwnership = async (req, res, next) => {
@@ -49,7 +47,7 @@ const validateOwnership = async (req, res, next) => {
       message: 'Unauthorized user',
     });
   }
-  return next();
+  next();
 };
 
 module.exports = {
